@@ -24,14 +24,30 @@ echo $root;
 //$search = USUARIO::search("r");
 //echo json_encode($search);
 
+//$usuario = new Usuario();
+//$usuario->login("Marissssssa","558877");
+//echo $usuario ;
+
+
+/*
+$aluno = new Usuario();
+$aluno->setDeslogin("aluno");
+$aluno->setDessenha("@1234777");
+$aluno->insert();
+
+echo $aluno;
+*/
+
+/*
+$aluno = new Usuario("Robson", "Ribeiro");
+$aluno->insert();
+echo $aluno;
+*/
 
 $usuario = new Usuario();
-
-$usuario->login("Marissssssa","558877");
-
-
-echo $usuario ;
-
+$usuario->loadById(7);
+$usuario->update("Ribeiro", "Souza10");
+echo $usuario;
 
 
 ?>

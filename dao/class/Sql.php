@@ -27,7 +27,7 @@ class Sql extends PDO {
 	}
 
 
-	public function busca($rawQuery, $params = array()){
+	public function execQuery($rawQuery, $params = array()){
 
 		$stmt = $this->conn->prepare($rawQuery);
 
@@ -42,7 +42,7 @@ class Sql extends PDO {
 
 	public function select($rawQuery, $params = array()):array
 	{
-		$stmt = $this->busca($rawQuery, $params);
+		$stmt = $this->execQuery($rawQuery, $params);
 
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -50,10 +50,8 @@ class Usuario {
 
 			$row = $results[0];
 
-			$this->setIdusuario($row['idusuario']);
-			$this->setdeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
+
 		}
 
 	}
@@ -86,16 +84,60 @@ class Usuario {
 
 			$row = $results[0];
 
-			$this->setIdusuario($row['idusuario']);
-			$this->setdeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
+
 		} else {
 
 			throw new Exception("Login e/ou senha inválidos.");
 			
 		}
 
+	}
+
+
+	public function setData($data){
+
+		$this->setIdusuario($data['idusuario']);
+		$this->setdeslogin($data['deslogin']);
+		$this->setDessenha($data['dessenha']);
+		$this->setDtcadastro(new DateTime($data['dtcadastro']));
+
+	}
+
+
+	public function insert(){
+
+		$sql = new Sql();
+
+		$results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)", array(':LOGIN'=>$this->getDeslogin(), ':PASSWORD'=>$this->getDessenha() ));
+
+		if(count($results) > 0){
+			$this->setData($results[0]);
+		}
+
+	}
+
+
+	public function update($login, $password){
+
+		$this->setDeslogin = $login;
+		$this->setDessenha = $password;
+
+		$sql = new Sql();
+
+		$sql->execQuery("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID", array(
+			':LOGIN' => $this->getDeslogin(), 
+			':PASSWORD' => $this->getDessenha(),
+			':ID' => $this->getIdusuario()
+		));
+	}
+
+
+	//metodo construtor quew chama a classe Usuário passando os paramentros - $login = "" para deixar como opcional
+	public function __construct($login = "", $password = ""){
+
+		$this->setDeslogin($login);
+		$this->setDessenha($password);
 	}
 
 
